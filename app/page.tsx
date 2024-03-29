@@ -2,7 +2,8 @@ import { ModeToggle } from '@/components/layout/ModeToggle';
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main>
+      content
       <ModeToggle />
     </main>
   );
