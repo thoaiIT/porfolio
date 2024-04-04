@@ -1,13 +1,15 @@
 'use client';
 import React, { type ReactNode } from 'react';
 import Header from './Header';
+import Footer from './Footer';
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="w-[100% -16px] mx-16 px-6">
+    <main className="w-full">
       <Header />
-      {children}
-    </div>
+      <div className="w-full border-b border-solid border-border">{children}</div>
+      <Footer />
+    </main>
   );
 };
 

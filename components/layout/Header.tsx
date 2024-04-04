@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import nvt from '@/public/images/nvt.svg';
 import { motion, useCycle } from 'framer-motion';
@@ -6,6 +6,8 @@ import { MenuToggle } from './MenuToggle';
 import { useDimensions } from '@/hooks/useDimensions';
 import { cn } from '@/lib/utils';
 import { MenuItem } from './MenuItem';
+import { navbarItems } from '@/constants';
+import NavItem from './NavItem';
 
 const sidebar = {
   open: (height = 1000) => ({
@@ -27,15 +29,18 @@ const sidebar = {
   },
 };
 
-const items = ['Home', 'About', 'Blogs', 'Portfolio'];
-
 const Header = () => {
+  const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [isOpen, toggleOpen] = useCycle(false, true);
+
   const containerRef = useRef(null);
   const { height } = useDimensions(containerRef);
 
   return (
-    <div className="py-9">
+    <div
+      id="header"
+      className="py-[36px] max-w-[1268px] mx-auto px-[24px]"
+    >
       <div className="flex justify-between items-center">
         <motion.a
           whileHover={{ scale: 1.1 }}
@@ -51,12 +56,24 @@ const Header = () => {
             Developer X
           </span>
         </motion.a>
-        <div className="flex justify-end items-center">
-          <ul className="flex">
-            <li>Home</li>
-            <li>About</li>
-            <li>Blog</li>
-            <li>Portfolio</li>
+        <div className="flex justify-end items-center pr-[78px]">
+          <ul className="flex justify-end">
+            {navbarItems.map((i, index) => (
+              <NavItem
+                key={i + index}
+                isDimmed={hoveredItem !== null && hoveredItem !== index}
+                onMouseEnter={() => setHoveredItem(index)}
+                onMouseLeave={() => setHoveredItem(null)}
+                className="pl-[32px]"
+              >
+                <a
+                  href={`/${i.toLowerCase()}`}
+                  className="p-0 text-[20px]"
+                >
+                  {i}
+                </a>
+              </NavItem>
+            ))}
           </ul>
           <motion.div
             initial={false}
@@ -65,12 +82,12 @@ const Header = () => {
             ref={containerRef}
           >
             <motion.div
-              className="absolute top-0 right-0 bottom-0 w-full bg-[#2d343f]"
+              className="absolute top-0 right-0 bottom-0 w-full bg-[#2d343f] z-10"
               variants={sidebar}
             >
               <div className="h-full w-full flex justify-center items-center">
                 <motion.ul>
-                  {items.map((i) => (
+                  {navbarItems.map((i) => (
                     <MenuItem
                       i={i}
                       key={i}

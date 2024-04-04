@@ -1,10 +1,6 @@
 import { ModeToggle } from '@/components/layout/ModeToggle';
+import { redirect } from 'next/navigation';
 
 export default function Home() {
-  return (
-    <main>
-      content
-      <ModeToggle />
-    </main>
-  );
+  redirect('/home');
 }

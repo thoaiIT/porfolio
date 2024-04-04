@@ -1,27 +1,16 @@
-import * as React from 'react';
-import { motion } from 'framer-motion';
-
-const Path = (props: any) => (
-  <motion.path
-    fill="transparent"
-    strokeWidth="3"
-    stroke="hsl(0, 100%, 100%)"
-    strokeLinecap="round"
-    {...props}
-  />
-);
-
-export const MenuToggle = ({ toggle }: { toggle: any }) => (
-  <motion.button
-    whileHover={{ scale: 1.1 }}
-    onClick={toggle}
-    className="cursor-pointer absolute top-[3rem] right-[23rem] z-50 text-[20px]"
-  >
-    <svg
+<svg
       width="23"
       height="23"
       viewBox="0 0 23 23"
     >
+    <style>
+        path {
+            fill: black;
+        }
+        @media (prefers-color-scheme: dark) {
+            path { fill: white; }
+        }
+    </style>
       <Path
         variants={{
           closed: { d: 'M 2 2.5 L 20 2.5' },
@@ -43,5 +32,3 @@ export const MenuToggle = ({ toggle }: { toggle: any }) => (
         }}
       />
     </svg>
-  </motion.button>
-);
