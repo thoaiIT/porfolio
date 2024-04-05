@@ -1,7 +1,20 @@
+import type { ReactNode } from 'react';
 import type { IconType } from 'react-icons';
 import { FaFacebookF, FaLinkedinIn, FaGithub } from 'react-icons/fa';
 
-export const navbarItems: string[] = ['Home', 'About', 'Blogs', 'Portfolio', 'Contact'];
+export type ItemType = {
+  label: string;
+  el?: ReactNode;
+  url?: string;
+};
+
+export const navbarItems: ItemType[] = [
+  { label: 'Home', url: '/home' },
+  { label: 'About', url: '/about' },
+  { label: 'Blogs', url: '/blogs' },
+  { label: 'Portfolio', url: '/portfolio' },
+  { label: 'Contact', url: '/contact' },
+];
 
 export type SocialItemType = {
   label: string;

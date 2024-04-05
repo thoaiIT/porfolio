@@ -1,49 +1,30 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import Image from 'next/image';
 import nvt from '@/public/images/nvt.svg';
 import { motion, useCycle } from 'framer-motion';
 import { MenuToggle } from './MenuToggle';
 import { useDimensions } from '@/hooks/useDimensions';
-import { cn } from '@/lib/utils';
-import { MenuItem } from './MenuItem';
 import { navbarItems } from '@/constants';
-import NavItem from './NavItem';
-
-const sidebar = {
-  open: (height = 1000) => ({
-    clipPath: `circle(${height * 2 + 200}px at center)`,
-    transition: {
-      type: 'spring',
-      stiffness: 20,
-      restDelta: 2,
-    },
-  }),
-  closed: {
-    clipPath: 'circle(0px at center)',
-    transition: {
-      delay: 0.4,
-      type: 'spring',
-      stiffness: 400,
-      damping: 40,
-    },
-  },
-};
+import { List } from './List';
+import { sidebar } from '@/lib/motion';
 
 const Header = () => {
-  const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [isOpen, toggleOpen] = useCycle(false, true);
 
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const { height } = useDimensions(containerRef);
 
   return (
-    <div
+    <motion.div
       id="header"
       className="py-[36px] max-w-[1268px] mx-auto px-[24px]"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
     >
       <div className="flex justify-between items-center">
         <motion.a
-          whileHover={{ scale: 1.1 }}
+          whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
           href="/"
           className="z-[2] flex gap-2 relative"
         >
@@ -57,24 +38,11 @@ const Header = () => {
           </span>
         </motion.a>
         <div className="flex justify-end items-center pr-[78px]">
-          <ul className="flex justify-end">
-            {navbarItems.map((i, index) => (
-              <NavItem
-                key={i + index}
-                isDimmed={hoveredItem !== null && hoveredItem !== index}
-                onMouseEnter={() => setHoveredItem(index)}
-                onMouseLeave={() => setHoveredItem(null)}
-                className="pl-[32px]"
-              >
-                <a
-                  href={`/${i.toLowerCase()}`}
-                  className="p-0 text-[20px]"
-                >
-                  {i}
-                </a>
-              </NavItem>
-            ))}
-          </ul>
+          <List
+            dataList={navbarItems}
+            listStyle="flex justify-end"
+            itemSyle="pl-[32px] text-[20px]"
+          />
           <motion.div
             initial={false}
             animate={isOpen ? 'open' : 'closed'}
@@ -86,21 +54,18 @@ const Header = () => {
               variants={sidebar}
             >
               <div className="h-full w-full flex justify-center items-center">
-                <motion.ul>
-                  {navbarItems.map((i) => (
-                    <MenuItem
-                      i={i}
-                      key={i}
-                    />
-                  ))}
-                </motion.ul>
+                <List
+                  dataList={navbarItems}
+                  itemSyle="my-5 text-8xl font-bold"
+                  listStyle="flex flex-col"
+                />
               </div>
             </motion.div>
             <MenuToggle toggle={() => toggleOpen()} />
           </motion.div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
